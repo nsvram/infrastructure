@@ -4,10 +4,15 @@
 # Steps to install 
 
 step 1 : copy the files to the local directory
+
 step 2 : spin up the vargrant boxes using the command "vagrant up"
+
 step 3 : the vagrantfile uses the bootstrap-mgmt.sh file to install ansible into the mgmt box. Also adds the ip addresses to the hosts file of mgmt box
+
 step 4 : copy inventory.ini file to the mgmt box - home path
+
 step 5 : add folling lines to the mgmt box in the folder /etc/ansible/ansible.cfg -- hostfile=/home/vagrant/inventory.ini
+
 step 6 : update the known_hosts file in .ssh folder inside mgmt box using the command below
 	ssh-keyscan web1 web2 >> .ssh/known_hosts
 
