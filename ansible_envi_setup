@@ -1,0 +1,38 @@
+Setup ansible environment: 
+
+install packages:
+
+ssh user@54.252.175.67
+sudo apt install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt-get install python python-dev python-pip openssl ansible
+ansible --version
+
+Update and configure:
+sudo chmod -R 777 /etc/ansible/
+mv hosts hosts.original
+vi ansible.cfg 
+        --uncomment inventory and sudo_user
+        -- add hosts and create group as needed 
+vi hosts
+adduser ansible
+sudo adduser ansible
+sudo visudo 
+        -- set the user ansible with asking for password
+        -- ansible ALL=(ALL) NOPASSWD:ALL
+ssh user@nsvram2@mylabserver.com
+
+
+sudo su ansible 
+
+ssh-keygen 
+clear
+ssh user@nsvram2.mylabserver.com
+clear
+ssh-copy-id ansible@nsvram2.mylabserver.com
+ssh ansible@nsvram2.mylabserver.com
+ssh ansible@nsvram3.mylabserver.com
+ssh-copy-id ansible@nsvram3.mylabserver.com
+ssh ansible@nsvram3.mylabserver.com
+
