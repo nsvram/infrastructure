@@ -11,8 +11,8 @@ ansible --version
 
 Update and configure:
 sudo chmod -R 777 /etc/ansible/
-mv hosts hosts.original
-vi ansible.cfg 
+mv /etc/ansible/hosts /etc/ansible/hosts.original
+vi /etc/ansible/ansible.cfg
         --uncomment inventory and sudo_user
         -- add hosts and create group as needed 
 vi hosts
