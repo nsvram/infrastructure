@@ -1,7 +1,7 @@
 Setup ansible environment: 
 
 install packages:
-
+```
 ssh user@54.252.175.67
 sudo apt install software-properties-common
 sudo apt-add-repository ppa:ansible/ansible
@@ -15,24 +15,71 @@ mv /etc/ansible/hosts /etc/ansible/hosts.original
 vi /etc/ansible/ansible.cfg
         --uncomment inventory and sudo_user
         -- add hosts and create group as needed 
+
 vi hosts
-adduser ansible
+# Create user in all the boxes
 sudo adduser ansible
+# update the visudo in all the boxes - so that it doesnt ask password
 sudo visudo 
         -- set the user ansible with asking for password
         -- ansible ALL=(ALL) NOPASSWD:ALL
-ssh user@nsvram2@mylabserver.com
+```
 
-
+# Create a key 
+```
 sudo su ansible 
-
 ssh-keygen 
-clear
-ssh user@nsvram2.mylabserver.com
-clear
+```
+
+# Copy the key to the other boxes
+```
 ssh-copy-id ansible@nsvram2.mylabserver.com
+ssh-copy-id ansible@nsvram3.mylabserver.com
+ssh-copy-id ansible@nsvram4.mylabserver.com
+ssh-copy-id ansible@nsvram5.mylabserver.com
+ssh-copy-id ansible@nsvram6.mylabserver.com
+```
+
+# Test the connection using the below command - it should connect without password
+```
 ssh ansible@nsvram2.mylabserver.com
 ssh ansible@nsvram3.mylabserver.com
-ssh-copy-id ansible@nsvram3.mylabserver.com
-ssh ansible@nsvram3.mylabserver.com
+ssh ansible@nsvram4.mylabserver.com
+ssh ansible@nsvram5.mylabserver.com
+ssh ansible@nsvram6.mylabserver.com
+```
 
+# Run inline ansible commands 
+``` 
+ansible box_names -s -m apt -a "name=python state=absent"
+```
+
+
+# Sample ansible playbook
+```
+--- # Simple ansible playbook to install pyhton, git
+- hosts: box_names
+  user: ansible
+  become: yes
+  connection: ssh
+  gather_facts: yes
+  tasks:
+
+  - name: Get updated
+    apt: pkg=aptitude state=present
+
+  - name: install the latest python
+    apt: pkg={{item}} state=present update_cache=yes
+    with_items:
+        - git
+        - python
+        - python-dev
+    notify:
+    - restart box
+  handlers:
+  - name: restart box
+    service:
+    name: python
+    enable: yes
+    state: restarted
+```
